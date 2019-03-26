@@ -31,10 +31,8 @@ export default class CityInput extends Component {
                     onChange={this.handleChange} />
 
                 <Link to={{
-                    pathname: '/forecast',
-                    state: {
-                        city: this.state.city
-                    }
+                    pathname:'/forecast',
+                    search: 'city=' + this.state.city
                 }}>
                     <button className='btn'>
                         Get Weather
