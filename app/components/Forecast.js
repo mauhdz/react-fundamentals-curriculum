@@ -1,30 +1,16 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 import queryString from 'query-string'
 import api from '../utils/api'
-import utils from "../utils/helper"
+import Day from '../components/Day'
 import Loading from '../components/Loading'
-
-function Day (props){
-  //console.log('date: '+ props.dt+ 'icon' +props.icon)
-  var date=utils.getDate(props.dt)
-  var img_url= './app/images/weather-icons/'+props.icon+'.svg'
-  return(
-    <div >
-      <img
-        alt='Image not found'
-        src= {img_url}
-      />
-      <p style={{color:'black'}}>{date}</p>
-    </div>
-  )
-}
 
 export default class Forecast extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      city:null,
+      city: null,
       forecast: null,
       loading: true,
       error: null
@@ -49,7 +35,7 @@ export default class Forecast extends Component {
         console.log(error)
         this.setState(function () {
           return {
-            city:city,
+            city: city,
             forecast: null,
             loading: false,
             error: 'An error ocurred'
@@ -60,6 +46,7 @@ export default class Forecast extends Component {
 
 
   render() {
+    var city=this.state.city;
     var forecast = this.state.forecast;
     var loading = this.state.loading;
     var error = this.state.error;
@@ -73,13 +60,21 @@ export default class Forecast extends Component {
 
     return (
       <div>
-        <h1 style={{color:'black'}}>{this.state.city}</h1>
-        {forecast.list.map(function(item){
-          return(
-            <Day key={item.dt} dt={item.dt} icon={item.weather[0].icon}/>
-          )
-        })}
+        <h1 style={{ color: 'black' }}>{this.state.city}</h1>
+        {forecast.list.map(function (item) {
+          return (
+            <Link to={{
+              pathname: '/details',
+              state:{
+                city:city,
+                forecast:item
+              }
+            }}>
+              <Day key={item.dt} dt={item.dt} icon={item.weather[0].icon} />
+            </Link>
+            )
+          })}
       </div>
-    )
-  }
+          )
+        }
 }
